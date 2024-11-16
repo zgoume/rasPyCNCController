@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
-from PySide.QtCore import *
+from PySide2.QtCore import *
 import pycnc_config
-from AbstractJogger import AbstractJogger
+from .AbstractJogger import AbstractJogger
 import pycnc_config
 
 class KeyboardJogger(AbstractJogger):

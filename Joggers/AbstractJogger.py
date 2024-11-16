@@ -30,7 +30,7 @@
 # Note: move events that are sent while the machine is moving will be discarded. There is no need to avoid firing multiple move events.
 # in order to install a jogger, call the method installJogger of the jogwidget.
 
-from PySide.QtCore import *
+from PySide2.QtCore import *
 
 class AbstractJogger(QObject):
 

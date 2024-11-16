@@ -16,22 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
-from PySide.QtCore import QThread, Signal
+from PySide2.QtCore import QThread, Signal
 import re
 import sys
 import time
-from PySide.QtGui import QApplication, QMessageBox
+from PySide2.QtWidgets import QApplication, QMessageBox
 
 from gcode.GrblWriter import showGrblErrorMessageBox
 
 
 def truncateGCode(gcode):
-  def replace(match):
-	match = match.group(2)
-	return "." + match[0:4]
+    def replace(match):
+        match = match.group(2)
+        return "." + match[0:4]
 
-  pattern = re.compile(r"([.])([0-9]+)")
-  return re.sub(pattern, replace, gcode)
+    pattern = re.compile(r"([.])([0-9]+)")
+    return re.sub(pattern, replace, gcode)
 
 class GCodeRunner(QThread):
 
@@ -144,7 +144,7 @@ class GCodeRunner(QThread):
                 e = sys.exc_info()[0]
                 self.error_event.emit("%s" % e)
 
-        print "File finished. Waiting for last ack"
+        print("File finished. Waiting for last ack")
         # wait for the last ack
         while True:
             ack, lineIn = self.grblWriter.ack_received()
@@ -152,7 +152,7 @@ class GCodeRunner(QThread):
                 break
             time.sleep(0.01)
 
-        print "Waiting for motion to finish"
+        print("Waiting for motion to finish")
         #self.grblWriter.wait_motion()
         self.grblWriter.wait_motion_nonblock()
         while True:

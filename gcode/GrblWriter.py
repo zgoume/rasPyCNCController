@@ -32,9 +32,9 @@
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
 
-from PySide.QtCore import *
-from PySide.QtGui import QApplication, QMessageBox
-from GCodeAnalyzer import GCodeAnalyzer
+from PySide2.QtCore import *
+from PySide2.QtWidgets import QApplication, QMessageBox
+from .GCodeAnalyzer import GCodeAnalyzer
 import serial
 import time
 import glob
@@ -74,7 +74,7 @@ def redefineSerialRW(serialInstance):
     oldWrite = serialInstance.write
 
     def newWrite(self, data):
-        print "Serial TX:", data.strip()
+        print("Serial TX:", data.strip())
         oldWrite(data)
 
     serialInstance.write = types.MethodType(newWrite, serialInstance)
@@ -83,7 +83,7 @@ def redefineSerialRW(serialInstance):
 
     def newReadline(self):
         data = oldReadline()
-        print "Serial RX:", data.strip()
+        print("Serial RX:", data.strip())
         return data
 
     serialInstance.readline = types.MethodType(newReadline, serialInstance)
@@ -120,13 +120,13 @@ class ZCompensation:
         self.nPointsX = int(math.ceil((self.xrange[1] - self.xrange[0]) / float(spacing)))+1
         self.nPointsY = int(math.ceil((self.yrange[1] - self.yrange[0]) / float(spacing)))+1
 
-        print "Ranges: ", self.xrange, self.yrange
+        print("Ranges: ", self.xrange, self.yrange)
 
         self.xPoints = [(i*spacing + self.xrange[0]) for i in range(self.nPointsX)]
         self.yPoints = [(i*spacing + self.yrange[0]) for i in range(self.nPointsY)]
 
-        print "Points X:", self.xPoints
-        print "Points Y:", self.yPoints
+        print("Points X:", self.xPoints)
+        print("Points Y:", self.yPoints)
 
         self.zValues = [[None for y in range(self.nPointsY)] for x in range(self.nPointsX)]
 
@@ -136,9 +136,9 @@ class ZCompensation:
         self.probePointIndices = []
         for yInd in range(len(self.yPoints)):
             if direction == 1:
-                xIter = range(len(self.xPoints))
+                xIter = list(range(len(self.xPoints)))
             else:
-                xIter = range(len(self.xPoints)-1, -1, -1)
+                xIter = list(range(len(self.xPoints)-1, -1, -1))
             for xInd in xIter:
                 self.probePointList.append((self.xPoints[xInd],self.yPoints[yInd]))
                 self.probePointIndices.append((xInd,yInd))
@@ -151,7 +151,7 @@ class ZCompensation:
 
     def setZValue(self, index, z, zOffset = 0):
         # sets a z value
-        print "Setting Z(",self.probePointIndices[index][0],self.probePointIndices[index][1], "):", z+zOffset
+        print("Setting Z(",self.probePointIndices[index][0],self.probePointIndices[index][1], "):", z+zOffset)
         self.zValues[self.probePointIndices[index][0]][self.probePointIndices[index][1]] = z + zOffset
 
     def isValid(self):
@@ -269,7 +269,7 @@ class GrblWriter(QObject):
         self.analyzer.Reset()
         self.analyzer.fastf = self.g0_feed
         machinePos, workPos = self.get_status(True)
-        print machinePos, workPos
+        print(machinePos, workPos)
         self.analyzer.syncStatusWithGrbl(machinePos, workPos) # read the actual positions from grbl
 
         if any([coord != 0 for coord in oldMachineCoords]):
@@ -318,7 +318,7 @@ class GrblWriter(QObject):
             self.serial.write("\x18")
         except:
             pass
-        print "Resetting!"
+        print("Resetting!")
         self.close()
         res = self.open()
         self.resetting = False
@@ -455,7 +455,7 @@ class GrblWriter(QObject):
             self.waitAck -= 1
             if self.waitAck == 0:
                 if self.restoreWorkCoords: # coordinates need to be restored
-                    print "Restoring work coordinates"
+                    print("Restoring work coordinates")
                     self.do_command("G10 P0 L20 X%.4f Y%.4f Z%.4f" % (self.analyzer.x, self.analyzer.y, self.analyzer.z))
                     self.restoreWorkCoords = False
 
@@ -606,7 +606,7 @@ class GrblWriter(QObject):
         y = end_status['position'][1] - initial_status['position'][1]
         z = end_status['position'][2] - initial_status['position'][2]
 
-        print "Probe position:",x,y,z
+        print("Probe position:",x,y,z)
 
         return x,y,z
 

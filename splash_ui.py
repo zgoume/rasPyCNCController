@@ -7,13 +7,13 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PySide import QtCore, QtGui
+from PySide2 import QtCore, QtGui, QtWidgets
 
 class Ui_Splash(object):
     def setupUi(self, Splash):
         Splash.setObjectName("Splash")
         Splash.resize(480, 320)
-        self.label = QtGui.QLabel(Splash)
+        self.label = QtWidgets.QLabel(Splash)
         self.label.setGeometry(QtCore.QRect(0, 110, 480, 71))
         font = QtGui.QFont()
         font.setFamily("FreeSans")
@@ -21,7 +21,7 @@ class Ui_Splash(object):
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
-        self.AbortButton = QtGui.QPushButton(Splash)
+        self.AbortButton = QtWidgets.QPushButton(Splash)
         self.AbortButton.setGeometry(QtCore.QRect(154, 189, 181, 71))
         font = QtGui.QFont()
         font.setFamily("FreeSans")
@@ -35,7 +35,7 @@ class Ui_Splash(object):
         QtCore.QMetaObject.connectSlotsByName(Splash)
 
     def retranslateUi(self, Splash):
-        Splash.setWindowTitle(QtGui.QApplication.translate("Splash", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("Splash", "Some text here", None, QtGui.QApplication.UnicodeUTF8))
-        self.AbortButton.setText(QtGui.QApplication.translate("Splash", "Abort", None, QtGui.QApplication.UnicodeUTF8))
+        Splash.setWindowTitle(QtWidgets.QApplication.translate("Splash", "Form", None, -1))
+        self.label.setText(QtWidgets.QApplication.translate("Splash", "Some text here", None, -1))
+        self.AbortButton.setText(QtWidgets.QApplication.translate("Splash", "Abort", None, -1))
 

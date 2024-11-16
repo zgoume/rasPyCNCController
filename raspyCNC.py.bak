@@ -19,7 +19,6 @@
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
 from PySide2.QtGui import *
-from PySide2.QtWidgets import *
 
 from gcode.GrblWriterBasic import GrblWriterBasic
 from gcode.GrblWriter import GrblWriter
@@ -116,9 +115,9 @@ class MainWindow(QStackedWidget):
                 print("Can't jogWidget.load_event.disconnect(self.loadFile)")
                 pass
             self.jogWidget.RunButton.originalText = self.jogWidget.RunButton.text()
-            self.jogWidget.RunButton.setText( config_string_format( QApplication.translate("joyWidget", "Cancel (%BTN_OK+1%)", None, -1)) )
+            self.jogWidget.RunButton.setText( config_string_format( QApplication.translate("joyWidget", "Cancel (%BTN_OK+1%)", None, QApplication.UnicodeUTF8)) )
             self.jogWidget.LoadButton.originalText = self.jogWidget.LoadButton.text()
-            self.jogWidget.LoadButton.setText(config_string_format( QApplication.translate("joyWidget", "Resume (%BTN_CANCEL+1%)", None, -1)))
+            self.jogWidget.LoadButton.setText(config_string_format( QApplication.translate("joyWidget", "Resume (%BTN_CANCEL+1%)", None, QApplication.UnicodeUTF8)))
 
             self.jogWidget.run_event.connect(self.cancelPause)
             self.jogWidget.load_event.connect(self.doResume)
@@ -171,7 +170,7 @@ class MainWindow(QStackedWidget):
     def exitRequest(self):
         flags = QMessageBox.StandardButton.Yes
         flags |= QMessageBox.StandardButton.No
-        question = QApplication.translate("cncController", "Do you really want to exit?", None, -1)
+        question = QApplication.translate("cncController", "Do you really want to exit?", None, QApplication.UnicodeUTF8)
         response = QMessageBox.question(self, "Question",
                                               question,
                                               flags)
@@ -236,7 +235,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     app = QApplication(sys.argv)
-    app.setStyle(QStyleFactory.create('Plastique'))
+    app.setStyle(QStyleFactory.create(u'Plastique'))
     window = MainWindow()
     if args.fullscreen:
         window.showFullScreen()

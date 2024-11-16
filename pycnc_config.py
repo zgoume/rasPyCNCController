@@ -1,4 +1,4 @@
-from PySide.QtCore import Qt
+from PySide2.QtCore import Qt
 
 # GrblWriter
 

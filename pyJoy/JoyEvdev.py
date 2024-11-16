@@ -3,7 +3,7 @@ try:
     import evdev
 except:
     evdev_available = False
-import PySide.QtCore
+import PySide2.QtCore
 import math
 import time
 import pycnc_config
@@ -26,18 +26,18 @@ def findAxesAxisTuple(code):
 def isButton(code):
     return code in pycnc_config.JOY_BUTTONS
 
-class JoyEvdev(PySide.QtCore.QThread):
+class JoyEvdev(PySide2.QtCore.QThread):
 
     # values
     BUTTON_DOWN = 1
     BUTTON_UP = 0
 
     def __init__(self):
-        PySide.QtCore.QThread.__init__(self)
+        PySide2.QtCore.QThread.__init__(self)
         self.joyDev = None
         self.killMe = False
         if not evdev_available:
-            print "Evdev system not available!"
+            print("Evdev system not available!")
             return
         devices = [evdev.InputDevice(fn) for fn in evdev.list_devices()]
         for dev in devices:
@@ -46,7 +46,7 @@ class JoyEvdev(PySide.QtCore.QThread):
                 break
 
         if self.joyDev is None:
-            print "Joystick not found!"
+            print("Joystick not found!")
 
     # redefine these stubs to do something useful in subclasses
     def processButton(self, code, value):
@@ -64,7 +64,7 @@ class JoyEvdev(PySide.QtCore.QThread):
 
     def start(self):
         if self.joyDev is None:
-            print "Cannot start Joystick"
+            print("Cannot start Joystick")
             return
 
         # traceback.print_stack()
@@ -73,7 +73,7 @@ class JoyEvdev(PySide.QtCore.QThread):
 
         # initialize events
         self.eventBlock = None
-        PySide.QtCore.QThread.start(self)
+        PySide2.QtCore.QThread.start(self)
         time.sleep(0.1)
 
     def process_events(self):
@@ -105,7 +105,7 @@ class JoyEvdev(PySide.QtCore.QThread):
 
     def run(self):
         if self.joyDev is None:
-            print "Cannot start Joystick"
+            print("Cannot start Joystick")
             return
 
         for event in self.joyDev.read_loop():
@@ -127,14 +127,14 @@ class JoyEvdev(PySide.QtCore.QThread):
 
 class JoyEvdevUIEventGenerator(JoyEvdev):
 
-    event_right = PySide.QtCore.Signal()
-    event_left = PySide.QtCore.Signal()
-    event_up = PySide.QtCore.Signal()
-    event_down = PySide.QtCore.Signal()
+    event_right = PySide2.QtCore.Signal()
+    event_left = PySide2.QtCore.Signal()
+    event_up = PySide2.QtCore.Signal()
+    event_down = PySide2.QtCore.Signal()
 
-    event_select = PySide.QtCore.Signal()
-    event_ok = PySide.QtCore.Signal()
-    event_cancel = PySide.QtCore.Signal()
+    event_select = PySide2.QtCore.Signal()
+    event_ok = PySide2.QtCore.Signal()
+    event_cancel = PySide2.QtCore.Signal()
 
 
     def __init__(self):
@@ -148,7 +148,7 @@ class JoyEvdevUIEventGenerator(JoyEvdev):
     def processButton(self, btnCode, value):
         if value != self.BUTTON_DOWN:
             return
-        print "Button event"
+        print("Button event")
         if btnCode == self.BUTTON_OK:
             self.event_ok.emit()
         elif btnCode == self.BUTTON_CANCEL:

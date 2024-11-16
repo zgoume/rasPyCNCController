@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
-from PySide import QtCore
-from GCodeAnalyzer import GCodeAnalyzer
+from PySide2 import QtCore
+from .GCodeAnalyzer import GCodeAnalyzer
 import sys
 import pycnc_config
 

@@ -22,16 +22,16 @@ from pyFileList.filelist import FileList
 #from pyJoy.JoyEventGenerator import JoyEventGenerator
 from pyJoy.JoyEvdev import JoyEvdevUIEventGenerator
 import sys
-import PySide.QtGui
-import PySide.QtCore
+import PySide2.QtGui
+import PySide2.QtCore
 import pycnc_config
 
 
 
 class JoyFileList(FileList):
 
-    ok_clicked = PySide.QtCore.Signal(object)
-    cancel_clicked = PySide.QtCore.Signal(object)
+    ok_clicked = PySide2.QtCore.Signal(object)
+    cancel_clicked = PySide2.QtCore.Signal(object)
 
     def __init__(self, parent=None):
         FileList.__init__(self,parent)
@@ -106,7 +106,7 @@ class JoyFileList(FileList):
 
 
     def startJoy(self):
-        print "File widget starting Joy"
+        print("File widget starting Joy")
         self.joyEventGen.start()
 
     def stopJoy(self):
@@ -124,7 +124,7 @@ class JoyFileList(FileList):
         self.cancel_clicked.emit(self.currentFile)
 
 if __name__ == "__main__":
-    app = PySide.QtGui.QApplication(sys.argv)
+    app = PySide2.QtWidgets.QApplication(sys.argv)
     window = JoyFileList()
     window.cancel_clicked.connect(window.stopEventGen)
     window.cancel_clicked.connect(lambda : window.destroy())

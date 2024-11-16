@@ -28,7 +28,7 @@ class JoyStatus:
     pygame.joystick.init()
     #print "Number of joysticks:", pygame.joystick.get_count()
     if pygame.joystick.get_count() == 0:
-      print "No Joystick available"
+      print("No Joystick available")
       self.joystick = None
     else:
       self.joystick = pygame.joystick.Joystick(0)
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     pygame.event.get()
     xyz = joy.getXYZ()
     if xyz != (0,0,0):
-      print xyz
+      print(xyz)
       
     time.sleep(0.1)
     

@@ -20,8 +20,9 @@ import os.path
 import sys
 import time
 
-from PySide.QtCore import *
-from PySide.QtGui import *
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 import re
 
 from Joggers.JoyJogThread import JoyJogThread
@@ -29,7 +30,7 @@ from Joggers.KeyboardJogger import KeyboardJogger
 from Joggers.ShuttleJogger import ShuttleJogger
 from gcode.GCodeLoader import GCodeLoader
 from gcode.JogHelper import JogHelper, JogHelper1_1
-from jogWidget_ui import Ui_joyWidget
+from .jogWidget_ui import Ui_joyWidget
 from gcode.GCodeRunner import truncateGCode
 from gcode.GrblWriter import showGrblErrorMessageBox
 

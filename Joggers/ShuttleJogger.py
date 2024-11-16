@@ -3,21 +3,21 @@ try:
     import evdev
 except:
     evdev_available = False
-import PySide.QtCore
+import PySide2.QtCore
 import math
 import time
 import pycnc_config
-from AbstractJogger import AbstractJogger
+from .AbstractJogger import AbstractJogger
 
-class WheelEventThread(PySide.QtCore.QThread):
+class WheelEventThread(PySide2.QtCore.QThread):
     def __init__(self, jogger):
-        PySide.QtCore.QThread.__init__(self)
+        PySide2.QtCore.QThread.__init__(self)
         self.jogger = jogger
         self.active = False
 
     def start(self):
         self.killMe = False
-        PySide.QtCore.QThread.start(self)
+        PySide2.QtCore.QThread.start(self)
 
     def run(self):
         self.active = True
@@ -46,7 +46,7 @@ class WheelEventThread(PySide.QtCore.QThread):
     def stop(self):
         self.killMe = True
 
-class ShuttleJogger(PySide.QtCore.QThread, AbstractJogger):
+class ShuttleJogger(PySide2.QtCore.QThread, AbstractJogger):
 
     # codes
     BUTTON_1 = pycnc_config.SHUTTLE_BUTTON_1
@@ -67,12 +67,12 @@ class ShuttleJogger(PySide.QtCore.QThread, AbstractJogger):
     BUTTON_UP = 0
 
     def __init__(self):
-        PySide.QtCore.QThread.__init__(self)
+        PySide2.QtCore.QThread.__init__(self)
         #AbstractJogger.__init__(self)
         self.shuttleDev = None
         self.killMe = False
         if not evdev_available:
-            print "Evdev system not available!"
+            print("Evdev system not available!")
             return
         devices = [evdev.InputDevice(fn) for fn in evdev.list_devices()]
         for dev in devices:
@@ -81,18 +81,18 @@ class ShuttleJogger(PySide.QtCore.QThread, AbstractJogger):
                 break
 
         if self.shuttleDev is None:
-            print "Shuttle not found!"
+            print("Shuttle not found!")
 
         #self.relative_move_event.connect(self.printMove)
         self.wheelEventThread = WheelEventThread(self)
         self.jogWidget = None
 
     def printMove(self, xyz, feed):
-        print xyz, "Feed", feed
+        print(xyz, "Feed", feed)
 
     def start(self):
         if self.shuttleDev is None:
-            print "Cannot start Shuttle jogger"
+            print("Cannot start Shuttle jogger")
             return
         self.shuttleDev.grab()
         self.killMe = False
@@ -104,7 +104,7 @@ class ShuttleJogger(PySide.QtCore.QThread, AbstractJogger):
         self.activeAxis = 0
         self.currentStepSizeIndex = 0
 
-        PySide.QtCore.QThread.start(self)
+        PySide2.QtCore.QThread.start(self)
         time.sleep(0.1)
 
     def process_events(self):
@@ -174,7 +174,7 @@ class ShuttleJogger(PySide.QtCore.QThread, AbstractJogger):
 
     def run(self):
         if self.shuttleDev is None:
-            print "Cannot start Shuttle jogger"
+            print("Cannot start Shuttle jogger")
             return
 
         for event in self.shuttleDev.read_loop():
@@ -214,10 +214,10 @@ if __name__ == '__main__':
 
 
     jogger = ShuttleJogger()
-    print jogger.shuttleDev.capabilities(verbose=True)
+    print(jogger.shuttleDev.capabilities(verbose=True))
     jogger.start()
     time.sleep(30)
-    print "Stopping..."
+    print("Stopping...")
     jogger.stop()
 
 

@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
-from PySide.QtCore import *
+from PySide2.QtCore import *
 import sys
 import pycnc_config
 import math
@@ -142,12 +142,12 @@ class JogHelper1_1(JogHelper):
         JogHelper.__init__(self)
 
     def relative_move(self, xyz, feed = None):
-        print "Relative move received"
+        print("Relative move received")
         if self.grblWriter is None: return
 
         # this is a jog stop
         if all([pos == 0 for pos in xyz]):
-            print "Cancelling jog"
+            print("Cancelling jog")
             self.grblWriter.cancelJog()
             self.grblWriter.wait_motion()
             self.grblWriter.update_position()

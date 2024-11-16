@@ -16,11 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
-import PySide.QtCore
+import PySide2.QtCore
 from pyJoy.JoyEvdev import JoyEvdev
 import time
 import pycnc_config
-from AbstractJogger import AbstractJogger
+from .AbstractJogger import AbstractJogger
 import math
 
 EVENT_MIN_INTERVAL = 20
@@ -31,7 +31,7 @@ class JoyJogThread(JoyEvdev, AbstractJogger): # order is important. Like this, J
     def __init__(self):
         JoyEvdev.__init__(self)
         self.accumulatedMove = None
-        self.eventTimer = PySide.QtCore.QTimer(self)
+        self.eventTimer = PySide2.QtCore.QTimer(self)
         self.eventTimer.timeout.connect(self.sendMoveEvent)
         self.movementConfig = [pycnc_config.JOY_XAXIS_MAP, pycnc_config.JOY_YAXIS_MAP, pycnc_config.JOY_ZAXIS_MAP]
         self.parent = None
@@ -107,13 +107,13 @@ class JoyJogThread(JoyEvdev, AbstractJogger): # order is important. Like this, J
         # print cmd
 
     def processSYN(self):
-        print "Syn received", self.accumulatedMove
+        print("Syn received", self.accumulatedMove)
         if self.accumulatedMove is None:
             return
 
         # send the move event
         if all([move == 0 for move in self.accumulatedMove]):
-            print "Stopping"
+            print("Stopping")
             self.accumulatedMove = None
             if self.eventTimer.isActive():
                 #print "Stopping timer"
@@ -121,7 +121,7 @@ class JoyJogThread(JoyEvdev, AbstractJogger): # order is important. Like this, J
             if self.parent.grblWriter is not None:
                 self.parent.grblWriter.cancelJog() # using messages is sometimes not fast enough
             self.relative_move_event.emit([0,0,0], 1000) # this is to stop a jog if Grbl1.1 is used
-            PySide.QtCore.QCoreApplication.processEvents()
+            PySide2.QtCore.QCoreApplication.processEvents()
             return
 
         t = time.time()
@@ -145,5 +145,5 @@ class JoyJogThread(JoyEvdev, AbstractJogger): # order is important. Like this, J
 if __name__=='__main__':
     jogThread = JoyJogThread()
     jogThread.start()
-    print "press return to exit"
-    raw_input()
+    print("press return to exit")
+    input()

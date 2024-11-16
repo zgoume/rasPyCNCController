@@ -16,9 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
-from PySide.QtCore import *
-from PySide.QtGui import *
-from runWidget_ui import Ui_runWidget
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
+from .runWidget_ui import Ui_runWidget
 from gcode.GCodeRunner import GCodeRunner
 import os.path
 import time
@@ -161,7 +162,7 @@ class RunWidget(Ui_runWidget, QWidget):
         self.setTime(self.totalTime - self.times[lineNo])
 
     def startJoy(self):
-        print "Run widget starting Joy"
+        print("Run widget starting Joy")
         time.sleep(0.5)
         self.joy.start()
 

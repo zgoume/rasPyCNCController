@@ -18,7 +18,7 @@
 
 #import pygame
 import time
-from PySide.QtCore import QThread
+from PySide2.QtCore import QThread
 import pycnc_config
 
 
@@ -39,7 +39,7 @@ class JoyEventGenerator(QThread):
     pygame.joystick.init()
     #print "Number of joysticks:", pygame.joystick.get_count()
     if pygame.joystick.get_count() == 0:
-      print "No Joystick available"
+      print("No Joystick available")
       self.joystick = None
     else:
       self.joystick = pygame.joystick.Joystick(0)
@@ -77,10 +77,10 @@ class JoyEventGenerator(QThread):
   
   #reimplement these methods to do something useful
   def hatEvent(self, hEv):
-    print "Hat event", hEv
+    print("Hat event", hEv)
     
   def btnEvent(self, bEv):
-    print "Button event", bEv
+    print("Button event", bEv)
   
   def run(self):
     if not self.joystick: return
@@ -136,8 +136,8 @@ class JoyEventGenerator(QThread):
 if __name__ == "__main__":
   joyEv = JoyEventGenerator()
   joyEv.start()
-  print "press return to exit"
-  raw_input()
+  print("press return to exit")
+  input()
   joyEv.stop()
    
     

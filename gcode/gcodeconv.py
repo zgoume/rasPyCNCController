@@ -84,4 +84,4 @@ class GCodeConverter:
 if __name__ == "__main__":
     conv = GCodeConverter()
     for line in fileinput.input():
-        print conv.convert(line)
+        print(conv.convert(line))

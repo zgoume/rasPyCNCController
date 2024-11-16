@@ -36,7 +36,7 @@ import math
 import fileinput
 import sys
 import os
-from gcodeconv import GCodeConverter
+from .gcodeconv import GCodeConverter
 
 def euclidean_distance(start, end):
     return math.sqrt(sum([(e - s) ** 2 for (s, e) in zip(start, end)]))
@@ -291,7 +291,7 @@ class GCodeAnalyzer():
                 code_e = findCode(gcode, "E")
 
                 if self.moveInMachineCoords: # convert the machine coords move to work coords
-                    print "Move is in machine coords!"
+                    print("Move is in machine coords!")
                     if code_x is not None:
                         code_x = safeFloat(code_x) + self.xOffset
 
@@ -523,7 +523,7 @@ class GCodeAnalyzer():
 
     def print_status(self):
         attrs = vars(self)
-        print '\n'.join("%s: %s" % item for item in attrs.items())
+        print('\n'.join("%s: %s" % item for item in list(attrs.items())))
 
     # returns true if the last move intersected the x value
     def intersected(self, xValue):
@@ -545,6 +545,6 @@ if __name__ == "__main__":
         analyzer.Analyze(line)
         # print line, analyzer.getPosition()
 
-    print "Bounding box:", analyzer.getBoundingBox()
-    print "Travel distance:", analyzer.getTravelLen()
-    print "Travel time:", analyzer.getTravelTime()
+    print("Bounding box:", analyzer.getBoundingBox())
+    print("Travel distance:", analyzer.getTravelLen())
+    print("Travel time:", analyzer.getTravelTime())

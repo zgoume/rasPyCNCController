@@ -18,8 +18,10 @@
 
 import psutil
 import sys
-from filelist_ui import Ui_FileList
-from PySide.QtGui import *
+from .filelist_ui import Ui_FileList
+from PySide2.QtGui import *
+from PySide2.QtCore import *
+from PySide2.QtWidgets import *
 import os
 import os.path
 import re
@@ -206,11 +208,11 @@ class FileList(Ui_FileList, QWidget):
             self.files.append(os.path.join(self.path, f))
 
     def okClicked(self):
-        print self.currentFile
+        print(self.currentFile)
         self.destroy()
 
     def cancelClicked(self):
-        print "Cancelled"
+        print("Cancelled")
         self.destroy()
 
 

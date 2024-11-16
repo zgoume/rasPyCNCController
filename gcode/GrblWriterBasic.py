@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
-from PySide.QtCore import *
-from GCodeAnalyzer import GCodeAnalyzer
+from PySide2.QtCore import *
+from .GCodeAnalyzer import GCodeAnalyzer
 import time
 
 # minimal implementation of Grbl writer interface. Just echoes the commands
@@ -29,7 +29,9 @@ class GrblWriterBasic(QObject):
         QObject.__init__(self)
         self.analyzer = GCodeAnalyzer()
         self.g0_feed = 5000
-        self.config = {}
+        self.config = {'Major' : 1}
+        self.serial = None
+        self.resetting = False
 
     # this will actually connect to Grbl
     def open(self):
@@ -49,7 +51,7 @@ class GrblWriterBasic(QObject):
         pass
 
     def do_command_nonblock(self, gcode):
-        print gcode
+        print(gcode)
         self.analyzer.Analyze(gcode)
         self.position_updated.emit(self.analyzer.getPosition())
         time.sleep(0.01)
