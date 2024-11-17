@@ -72,6 +72,12 @@ class GrblWriterBasic(QObject):
         self.storedPos['relative'] = self.analyzer.relative
         self.storedPos['metric'] = self.analyzer.metric
 
+    def probe_z_offset(self):
+        return 30
+
+    def probe_grid(self, a, b, c):
+        return True
+
     def resume_pos(self):
         # go back to the stored position
         safeZ = self.analyzer.maxZ

@@ -200,7 +200,8 @@ class ShuttleJogger(PySide2.QtCore.QThread, AbstractJogger):
 
     def stop(self):
         self.killMe = True
-        self.wheelEventThread.stop()
+        if self.shuttleDev:
+            self.wheelEventThread.stop()
         time.sleep(0.1)
         if self.shuttleDev:
             self.shuttleDev.ungrab()

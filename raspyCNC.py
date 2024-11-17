@@ -178,6 +178,7 @@ class MainWindow(QStackedWidget):
         if response == QMessageBox.Yes:
             self.jogWidget.stopJoggers()
             self.destroy()
+            QApplication.quit()
 
 
     # function called when the jog widget wants to select a file: activate the fileListWidget
