@@ -46,6 +46,7 @@ import types
 import pycnc_config
 from gcode.GrblErrors import GrblErrorDict
 
+import traceback
 
 def suppressGCode(gcodeLine, toSuppress):
     gcodefinder = re.compile(toSuppress + '(?![0-9.])[^MG]*', re.I) # suppress M6 but not M66, even when it's M6G0, for example
@@ -234,19 +235,23 @@ class GrblWriter(QObject):
                 redefineSerialRW(self.serial) # this is to debug communication!
             self.serial.flushInput()
             time.sleep(0.1)
-            self.serial.write("\r\n")
+            self.serial.write(bytes("\r\n", 'utf-8'))
             time.sleep(0.1)
-            self.serial.write("\x18")
+            self.serial.write(bytes("\x18", 'utf-8'))
             time.sleep(0.1)
-            grblLine = self.serial.readline()
+            grblLine = self.serial.readline().decode('utf-8')
             while 'Grbl' not in grblLine:
-                grblLine = self.serial.readline()
+                grblLine = self.serial.readline().decode('utf-8')
                 time.sleep(0.1)
             time.sleep(0.5)
+            print("DEBUG 5")
             self.serial.flushInput()
             self.load_config(grblLine)
-        except:
+            print("DEBUG 6")
+        except Exception as e:
             # serial port could not be opened
+            print(e)
+            traceback.print_exc()
             return False
 
         if self.config[22] == 1: # homing is enabled. A homing cycle needs to be performed.
@@ -296,9 +301,9 @@ class GrblWriter(QObject):
             self.set_check_mode(True)
 
         self.serial.flushInput()
-        self.serial.write(line + '\n')
+        self.serial.write(bytes(line + '\n', 'utf-8'))
         while True:
-            res = self.serial.readline()
+            res = self.serial.readline().decode('utf-8')
             r = res.lower()
             if 'ok' in r:
                 return True, None
@@ -315,7 +320,7 @@ class GrblWriter(QObject):
     def reset(self):
         self.resetting = True
         try:
-            self.serial.write("\x18")
+            self.serial.write(b"\x18")
         except:
             pass
         print("Resetting!")
@@ -332,12 +337,12 @@ class GrblWriter(QObject):
         result = []
 
         while True:
-            while not self.serial.inWaiting > 0:
+            while not self.serial.inWaiting() > 0:
                 QApplication.processEvents()
-            line = self.serial.readline().strip()
+            line = self.serial.readline().strip().decode('utf-8')
             #print "Received line:", line
             if pycnc_config.SERIAL_DEBUG:
-                if line == "": self.serial.write("\n")
+                if line == "": self.serial.write(b"\n")
             if line.startswith("error:") or line.startswith("ALARM:"):
                 self.analyzer.undo()
                 self.grbl_error.emit(line)
@@ -359,9 +364,9 @@ class GrblWriter(QObject):
     def do_compensated_move(self, lastMoveCommand):
         if lastMoveCommand.isArc():  # arcs don't have a z movement: add one in the end
             lastMoveCommand.z += self.zCompensation.getZValue(lastMoveCommand.x, lastMoveCommand.y)
-            self.serial.write(lastMoveCommand.getCommand() + '\n')
+            self.serial.write(bytes(lastMoveCommand.getCommand() + '\n', 'utf-8'))
             self.read_response()  # wait for previous command to be acknowledged
-            self.serial.write("G1 Z%.4f F100" % (lastMoveCommand.z))
+            self.serial.write(bytes("G1 Z%.4f F100" % (lastMoveCommand.z), 'utf-8'))
             response = self.read_response()
         else:
             #print "Z compensation: original command ", lastMoveCommand.getCommand()
@@ -371,7 +376,7 @@ class GrblWriter(QObject):
                 #print "Z compensation: ",  self.zCompensation.getZValue(splitted_cmd.x, splitted_cmd.y)
                 splitted_cmd.z += self.zCompensation.getZValue(splitted_cmd.x, splitted_cmd.y)
                 #print "Z compensation:      new command ", splitted_cmd.getCommand()
-                self.serial.write(splitted_cmd.getCommand() + '\n')
+                self.serial.write(bytes(splitted_cmd.getCommand() + '\n', 'utf-8'))
                 response = self.read_response()
         return response
 
@@ -394,10 +399,10 @@ class GrblWriter(QObject):
                 lastMoveCommand is not None): # z compensation only works in absolute coords
             response = self.do_compensated_move(lastMoveCommand)
         else: #business as usual
-            self.serial.write(command)
+            self.serial.write(bytes(command, 'utf-8'))
             if pycnc_config.SERIAL_DEBUG:
                 time.sleep(0.1)
-            self.serial.write('\n')
+            self.serial.write(b'\n')
             response = self.read_response(ignoreInitialize=initCommand)
         if wait:
             self.wait_motion()
@@ -423,7 +428,7 @@ class GrblWriter(QObject):
             self.do_compensated_move(lastMoveCommand)
             self.waitAck -= 1 # the do_compensated_move is blocking because it has to execute multiple commands. So remove the waitack.
         else: #business as usual
-            self.serial.write(command + '\n')
+            self.serial.write(bytes(command + '\n', 'utf-8'))
         self.position_updated.emit(self.analyzer.getPosition())
         #print "Nonblock: wait ack status", self.waitAck
 
@@ -435,7 +440,7 @@ class GrblWriter(QObject):
         if not self.serial.inWaiting() > 0:
             return False, None
 
-        line = self.serial.readline().strip()
+        line = self.serial.readline().strip().decode('utf-8')
 
         if line.startswith("Grbl"):
             # coordinates were reset
@@ -487,7 +492,7 @@ class GrblWriter(QObject):
 
     def load_config(self, grblLine=None):
         # query GRBL for the configuration
-        conf = self.do_command("$$", initCommand=True)
+        conf = self.do_command('$$', initCommand=True)
         self.config = {}
         if grblLine is not None:
             # this is the Grbl welcome message
@@ -530,7 +535,7 @@ class GrblWriter(QObject):
             self.do_command("G20")
 
     def get_status(self, getBothStatuses = False):
-        self.serial.write('?') # no newline needed
+        self.serial.write(b'?') # no newline needed
         res = self.read_response(None) # read one line
         # status is: <Idle,MPos:10.000,-5.000,2.000,WPos:0.000,0.000,0.000,Buf:0,RX:0,Ln:0,F:0.>
         #get machine and work pos
@@ -666,4 +671,4 @@ class GrblWriter(QObject):
         self.position_updated.emit(self.analyzer.getPosition())
 
     def cancelJog(self):
-        self.serial.write('\x85')
+        self.serial.write(b'\x85')
