@@ -244,10 +244,8 @@ class GrblWriter(QObject):
                 grblLine = self.serial.readline().decode('utf-8')
                 time.sleep(0.1)
             time.sleep(0.5)
-            print("DEBUG 5")
             self.serial.flushInput()
             self.load_config(grblLine)
-            print("DEBUG 6")
         except Exception as e:
             # serial port could not be opened
             print(e)
@@ -340,7 +338,7 @@ class GrblWriter(QObject):
             while not self.serial.inWaiting() > 0:
                 QApplication.processEvents()
             line = self.serial.readline().strip().decode('utf-8')
-            #print "Received line:", line
+            # print("Received line: %s" % line)
             if pycnc_config.SERIAL_DEBUG:
                 if line == "": self.serial.write(b"\n")
             if line.startswith("error:") or line.startswith("ALARM:"):
