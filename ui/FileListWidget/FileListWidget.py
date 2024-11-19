@@ -18,7 +18,7 @@
 
 import time
 
-from pyFileList.filelist import FileList
+from ui.FileListWidget.filelist import FileList
 #from pyJoy.JoyEventGenerator import JoyEventGenerator
 from pyJoy.JoyEvdev import JoyEvdevUIEventGenerator
 import sys
@@ -28,7 +28,7 @@ import pycnc_config
 
 
 
-class JoyFileList(FileList):
+class FileListWidget(FileList):
 
     ok_clicked = PySide2.QtCore.Signal(object)
     cancel_clicked = PySide2.QtCore.Signal(object)

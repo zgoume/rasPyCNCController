@@ -24,6 +24,7 @@ import time
 class GrblWriterBasic(QObject):
 
     position_updated = Signal(object)
+    grbl_error = Signal(object)
 
     def __init__(self):
         QObject.__init__(self)
@@ -45,7 +46,7 @@ class GrblWriterBasic(QObject):
         print("DEBUG do_command : %s" % gcode)
         self.analyzer.Analyze(gcode)
         self.position_updated.emit(self.analyzer.getPosition())
-        time.sleep(0.1)
+        time.sleep(1)
 
     def wait_motion(self):
         pass
@@ -54,7 +55,7 @@ class GrblWriterBasic(QObject):
         print(gcode)
         self.analyzer.Analyze(gcode)
         self.position_updated.emit(self.analyzer.getPosition())
-        time.sleep(0.01)
+        time.sleep(1)
 
     def ack_received(self):
         return True, None

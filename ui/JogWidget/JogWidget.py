@@ -34,7 +34,7 @@ from .jogWidget_ui import Ui_joyWidget
 from gcode.GCodeRunner import truncateGCode
 from gcode.GrblWriter import showGrblErrorMessageBox
 
-from string_format import config_string_format
+from utils.string_format import config_string_format
 
 import pycnc_config
 

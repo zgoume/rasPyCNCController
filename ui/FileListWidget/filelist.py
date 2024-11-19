@@ -26,7 +26,7 @@ import os
 import os.path
 import re
 import pycnc_config
-from string_format import config_string_format
+from utils.string_format import config_string_format
 
 
 # see: https://stackoverflow.com/questions/2696733/set-bold-rows-in-a-qtreeview

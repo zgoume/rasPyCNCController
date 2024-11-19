@@ -1,5 +1,7 @@
+#!/usr/bin/env python
+
 # rasPyCNCController
-# Copyright 2016 Francesco Santini <francesco.santini@gmail.com>
+# Copyright 2024 zgoume <zgoume[arobase]]gmail.com>
 #
 # This file is part of rasPyCNCController.
 #
@@ -16,35 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
-from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
-from .moveWidget_ui import Ui_moveWidget
-from gcode.GCodeRunner import GCodeRunner
-import os.path
-import time
-from pyJoy.JoyEvdev import JoyEvdevUIEventGenerator
+from .splash_ui import Ui_Splash
 
-class MoveWidget(Ui_moveWidget, QWidget):
 
-    error_event = Signal(object)
-    stop_event = Signal()
-    end_event = Signal()
-    pause_event = Signal(object)
-    move_event = Signal()
-    jog_widget = Signal()
-    pause_clicked = Signal()
-
-    def __init__(self, parent=None):
+class SplashWidget(QWidget, Ui_Splash):
+    def __init__(self, parent = None):
         QWidget.__init__(self, parent)
         self.setupUi(self)
-        self.PauseButton.clicked.connect(lambda : self.retEvent())
 
-    def retEvent(self):
-        print("kill window")
-        self.pause_clicked.emit()
-        self.destroy()
-
-    def setGrbl(self, grblWriter):
-        self.jogHelper.setGrbl(grblWriter)
-
+    def setText(self, txt):
+        self.label.setText(txt)
