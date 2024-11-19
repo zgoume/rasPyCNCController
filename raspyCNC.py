@@ -245,6 +245,9 @@ class MainWindow(QStackedWidget):
 
         self.setCurrentWidget(self.jogWidget)
         self.jogWidget.startJoggers()
+    
+    def closeEvent(self, event):
+        sys.exit(0)
 
 
 
