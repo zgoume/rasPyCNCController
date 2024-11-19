@@ -189,6 +189,7 @@ class MainWindow(QStackedWidget):
             self.jogWidget.stopJoggers()
             self.destroy()
             QApplication.quit()
+            sys.exit(0)
 
 
     # function called when the jog widget wants to select a file: activate the fileListWidget
