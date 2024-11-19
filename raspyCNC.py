@@ -273,10 +273,12 @@ if __name__ == "__main__":
     
     window.start_app(args.dummy)
     
-    sys.exit(app.exec_())
-
     with loop:
         loop.run_forever()
+
+    sys.exit(app.exec_())
+
+
 
 
 
