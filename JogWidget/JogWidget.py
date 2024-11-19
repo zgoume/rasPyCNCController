@@ -43,6 +43,7 @@ class JogWidget(Ui_joyWidget, QWidget):
     run_event = Signal()
     load_event = Signal()
     error_event = Signal(object)
+    jog_event = Signal()
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -55,6 +56,8 @@ class JogWidget(Ui_joyWidget, QWidget):
 
         self.RunButton.clicked.connect(self.runEvent)
         self.LoadButton.clicked.connect(self.loadEvent)
+
+        self.SwitchButton.clicked.connect(self.switchEvent)
 
         if pycnc_config.ENABLE_PROBING:
             self.ZProbeButton.clicked.connect(self.zProbeEvent)
@@ -124,7 +127,7 @@ class JogWidget(Ui_joyWidget, QWidget):
             return
 
         self.grblWriter.compensate_z(True)
-        self.GridProbeButton.setText("Clear Grid")
+        self.GridProbeButton.setText("Clear Grid")     
 
     def installJogger(self, jogger):
         jogger.install(self)
@@ -305,6 +308,10 @@ class JogWidget(Ui_joyWidget, QWidget):
     def loadEvent(self):
         self.stopJoggers()
         self.load_event.emit()
+
+    def switchEvent(self):
+        self.stopJoggers()
+        self.jog_event.emit()
 
     def joyExitEvent(self, exitCondition):
         # joy is stopped now!

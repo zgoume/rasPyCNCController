@@ -25,12 +25,16 @@ from gcode.GrblWriterBasic import GrblWriterBasic
 from gcode.GrblWriter import GrblWriter
 from JogWidget.JogWidget import JogWidget
 from RunWidget.RunWidget import RunWidget
+from MoveWidget.MoveWidget import MoveWidget
 from pyFileList.JoyFileList import JoyFileList
 import sys
 from splash_ui import Ui_Splash
 import time
 import argparse
 from string_format import config_string_format
+from qasync import QEventLoop
+import asyncio
+
 
 class SplashWidget(QWidget, Ui_Splash):
     def __init__(self, parent = None):
@@ -75,21 +79,27 @@ class MainWindow(QStackedWidget):
         self.jogWidget = JogWidget()
         self.runWidget = RunWidget()
         self.fileListWidget = JoyFileList()
+        self.moveWidget = MoveWidget()
 
         self.runWidget.setGrbl(self.grblWriter)
         self.jogWidget.setGrbl(self.grblWriter)
+        self.moveWidget.setGrbl(self.grblWriter)
 
         self.addWidget(self.jogWidget)
         self.addWidget(self.fileListWidget)
         self.addWidget(self.runWidget)
+        self.addWidget(self.moveWidget)
 
         self.jogWidget.load_event.connect(self.loadFile)
         self.jogWidget.run_event.connect(self.runFile)
         self.jogWidget.error_event.connect(self.grblError)
         self.jogWidget.exitButton.clicked.connect(self.exitRequest)
-
+        self.jogWidget.jog_event.connect(self.jogSwitch)
+        
         self.fileListWidget.ok_clicked.connect(self.fileSelected)
         self.fileListWidget.cancel_clicked.connect(self.cancelFileSelected)
+
+        self.moveWidget.pause_clicked.connect(self.jogQuiteEvent)
 
         # at the moment end and stop in the run widget have the same effect
         self.runWidget.end_event.connect(self.runEnd)
@@ -201,6 +211,14 @@ class MainWindow(QStackedWidget):
         self.setCurrentWidget(self.jogWidget)
         self.jogWidget.startJoggers()
 
+    # reactivate jogWidget without changing anything
+    def jogQuiteEvent(self):
+        print('go back')
+        self.setCurrentWidget(self.jogWidget)
+
+    def jogSwitch(self):
+        self.setCurrentWidget(self.moveWidget)
+
     def runFile(self):
         if self.jogWidget.isFileLoaded == False:
             return
@@ -237,16 +255,28 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     app = QApplication(sys.argv)
+
+    loop = QEventLoop(app)
+    asyncio.set_event_loop(loop)
+    
+    # Get screen size for fullscreen
+    screen = app.primaryScreen()
+    size = screen.size()
+    rect = screen.availableGeometry()
+    
     app.setStyle(QStyleFactory.create('Plastique'))
     window = MainWindow()
     if args.fullscreen:
         window.showFullScreen()
     else:
         window.show()
-
+    
     window.start_app(args.dummy)
+    
     sys.exit(app.exec_())
 
+    with loop:
+        loop.run_forever()
 
 
 

@@ -184,6 +184,16 @@ class Ui_joyWidget(object):
         self.GridProbeButton.setStyleSheet("QPushButton:disabled { color: gray }")
         self.GridProbeButton.setObjectName("GridProbeButton")
         self.horizontalLayout_2.addWidget(self.GridProbeButton)
+        self.SwitchButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.SwitchButton.setMinimumSize(QtCore.QSize(0, 49))
+        font = QtGui.QFont()
+        font.setFamily("FreeSans")
+        font.setPointSize(15)
+        font.setWeight(75)
+        font.setBold(True)
+        self.SwitchButton.setFont(font)
+        self.SwitchButton.setObjectName("SwitchButton")
+        self.horizontalLayout_2.addWidget(self.SwitchButton)
 
         self.retranslateUi(joyWidget)
         QtCore.QMetaObject.connectSlotsByName(joyWidget)
@@ -200,4 +210,5 @@ class Ui_joyWidget(object):
         self.LoadButton.setText(QtWidgets.QApplication.translate("joyWidget", "Load (%BTN_CANCEL+1%)", None, -1))
         self.ZProbeButton.setText(QtWidgets.QApplication.translate("joyWidget", "Z Probe", None, -1))
         self.GridProbeButton.setText(QtWidgets.QApplication.translate("joyWidget", "Grid Probe", None, -1))
+        self.SwitchButton.setText(QtWidgets.QApplication.translate("joyWidget", "Jog", None, -1))
 

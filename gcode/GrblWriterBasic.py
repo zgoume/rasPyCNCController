@@ -42,7 +42,7 @@ class GrblWriterBasic(QObject):
         self.analyzer.Reset()
 
     def do_command(self, gcode, wait=False):
-        print(gcode)
+        print("DEBUG do_command : %s" % gcode)
         self.analyzer.Analyze(gcode)
         self.position_updated.emit(self.analyzer.getPosition())
         time.sleep(0.1)
@@ -77,6 +77,9 @@ class GrblWriterBasic(QObject):
 
     def probe_grid(self, a, b, c):
         return True
+
+    def update_position(self):
+        return
 
     def resume_pos(self):
         # go back to the stored position

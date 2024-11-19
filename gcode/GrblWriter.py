@@ -391,6 +391,8 @@ class GrblWriter(QObject):
         self.analyzer.Analyze(command)
         lastMoveCommand = self.analyzer.lastMovementGCode
 
+        print("DEBUG do_command : %s" % gcode)
+
         if (self.doZCompensation and
                 self.zCompensation and
                 not self.analyzer.relative and
