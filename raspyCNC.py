@@ -56,17 +56,14 @@ if __name__ == "__main__":
     screen = app.primaryScreen()
     size = screen.size()
     rect = screen.availableGeometry()
-    print("DEBUG SCREEN")
-
-    for m in get_monitors():
-        print(str(m))
+    print(rect)
     
-    app.setStyle(QStyleFactory.create('Plastique'))
+    app.setStyle(QStyleFactory.create('GTK+'))
     window = MainWindow()
     if args.fullscreen:
-        window.showFullScreen()
-    else:
-        window.show()
+        window.setGeometry(0, 0, rect.width(), rect.height())
+        
+    window.show()
     
     window.start_app(args.dummy)
     
