@@ -29,6 +29,7 @@ from ui.MoveWidget.MoveWidget import MoveWidget
 from ui.FileListWidget.FileListWidget import FileListWidget
 from ui.SplashWidget.SplashWidget import SplashWidget
 from ui.MainWindow.MainWindow import MainWindow
+from screeninfo import get_monitors
 
 import sys
 import time
@@ -55,7 +56,10 @@ if __name__ == "__main__":
     screen = app.primaryScreen()
     size = screen.size()
     rect = screen.availableGeometry()
-    print(rect)
+    print("DEBUG SCREEN")
+
+    for m in get_monitors():
+        print(str(m))
     
     app.setStyle(QStyleFactory.create('Plastique'))
     window = MainWindow()
