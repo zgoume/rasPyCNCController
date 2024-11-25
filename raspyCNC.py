@@ -55,6 +55,7 @@ if __name__ == "__main__":
     screen = app.primaryScreen()
     size = screen.size()
     rect = screen.availableGeometry()
+    print(rect)
     
     app.setStyle(QStyleFactory.create('Plastique'))
     window = MainWindow()

@@ -27,7 +27,7 @@ class Joystick(QWidget):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        bounds = QRectF(-self.__maxDistance, -self.__maxDistance, self.__maxDistance * 2, self.__maxDistance * 2).translated(self._center())
+        bounds = QRectF(-self.__maxDistance, -self.__maxDistance, ((self.__maxDistance * 2) - 1) , ((self.__maxDistance * 2) - 1)).translated(self._center())
         painter.drawRect(bounds)
         painter.setBrush(Qt.black)
         painter.drawEllipse(self._centerEllipse())

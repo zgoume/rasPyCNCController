@@ -15,7 +15,7 @@ import pycnc_config
 
 class Ui_moveWidget(object):
 
-    steps = [0.1, 0.5, 1, 2, 5, 10]
+    
 
     def setupUi(self, moveWidget):
         moveWidget.setObjectName("moveWidget")
@@ -42,9 +42,7 @@ class Ui_moveWidget(object):
 
         self.XSlider = Joystick(moveWidget)
         self.XSlider.setRangeValue(len(self.steps))
-        self.XSlider.joyChanged.connect(self.start_sending_commands)
-        self.XSlider.joyReleased.connect(self.stop_sending_commands_and_reset)
-        self.XSlider.setGeometry(QtCore.QRect(50, 50, 202, 202))
+        self.XSlider.setGeometry(QtCore.QRect(50, 50, 200, 200))
         self.XSlider.setObjectName("XSlider")
         self.is_sending_command = False
 
@@ -62,38 +60,6 @@ class Ui_moveWidget(object):
         moveWidget.setWindowTitle(QtWidgets.QApplication.translate("moveWidget", "Form", None, -1))
         self.PauseButton.setText(QtWidgets.QApplication.translate("moveWidget", "Back", None, -1))
 
-    async def send_command(self, x, y):
-        # Simulate async behavior (e.g., network call)
-        if (x != 0):
-            multipX = 1 if x > 0 else -1
-            stepX = self.steps[abs(x) - 1]
-        else:
-            multipX = 1
-            stepX = 0
-
-        if (y != 0):
-            multipY = 1 if y > 0 else -1
-            stepY = self.steps[abs(y) - 1]
-        else:
-            multipY = 1
-            stepY = 0
-
-        self.relativeMove([(multipX * stepX), (multipY * stepY), 0], pycnc_config.MAX_FEED)
-
-        await asyncio.sleep(0.05)  # Simulated delay (adjust as needed)
-
-    async def handle_commands(self):
-        self.is_sending_command = True
-
-        while self.is_sending_command:
-            x, y = self.XSlider.value()
-            await self.send_command(x, y)
-
-    def start_sending_commands(self):
-        asyncio.ensure_future(self.handle_commands())
-        
-
-    def stop_sending_commands_and_reset(self):
-        self.is_sending_command = False
-        #self.XSlider.setValue(0)  # Reset slider to middle position
+    def getJoyWidget(self):
+        return self.XSlider
 

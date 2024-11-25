@@ -46,7 +46,7 @@ class GrblWriterBasic(QObject):
         print("DEBUG do_command : %s" % gcode)
         self.analyzer.Analyze(gcode)
         self.position_updated.emit(self.analyzer.getPosition())
-        time.sleep(1)
+        #time.sleep(1)
 
     def wait_motion(self):
         pass
@@ -55,7 +55,7 @@ class GrblWriterBasic(QObject):
         print(gcode)
         self.analyzer.Analyze(gcode)
         self.position_updated.emit(self.analyzer.getPosition())
-        time.sleep(1)
+        #time.sleep(1)
 
     def ack_received(self):
         return True, None
