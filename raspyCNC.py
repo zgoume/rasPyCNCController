@@ -29,7 +29,7 @@ from ui.MoveWidget.MoveWidget import MoveWidget
 from ui.FileListWidget.FileListWidget import FileListWidget
 from ui.SplashWidget.SplashWidget import SplashWidget
 from ui.MainWindow.MainWindow import MainWindow
-from screeninfo import get_monitors
+from ui.AppWindow.AppWindow import AppWindow
 
 import sys
 import time
@@ -44,31 +44,29 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A convenient GUI for CNC control")
     parser.add_argument("-f", "--fullscreen", action="store_true", help="make app fullscreen")
     parser.add_argument("-d", "--dummy", action="store_true", help="use dummy sender (debug)")
+    parser.add_argument("-n", "--newgui", action="store_true", help="use new GUI")
 
     args = parser.parse_args()
 
     app = QApplication(sys.argv)
-
-    loop = QEventLoop(app)
-    asyncio.set_event_loop(loop)
     
     # Get screen size for fullscreen
     screen = app.primaryScreen()
     size = screen.size()
     rect = screen.availableGeometry()
-    print(rect)
     
-    app.setStyle(QStyleFactory.create('GTK+'))
-    window = MainWindow()
+    app.setStyle(QStyleFactory.create('Breeze'))
+
+    if args.newgui:
+        window = AppWindow()
+    else:
+        window = MainWindow()
     if args.fullscreen:
         window.setGeometry(0, 0, rect.width(), rect.height())
         
     window.show()
     
     window.start_app(args.dummy)
-    
-    with loop:
-        loop.run_forever()
 
     sys.exit(app.exec_())
 

@@ -44,6 +44,7 @@ class MainWindow(QStackedWidget):
     def __init__(self, parent=None):
         QStackedWidget.__init__(self,parent)
         self.resize(480, 320)
+        self.setStyleSheet("background: black")
 
     def start_app(self, dummy = False):
         self.splash = SplashWidget(self)
@@ -244,38 +245,6 @@ class MainWindow(QStackedWidget):
     def closeEvent(self, event):
         sys.exit(0)
 
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="A convenient GUI for CNC control")
-    parser.add_argument("-f", "--fullscreen", action="store_true", help="make app fullscreen")
-    parser.add_argument("-d", "--dummy", action="store_true", help="use dummy sender (debug)")
-
-    args = parser.parse_args()
-
-    app = QApplication(sys.argv)
-
-    loop = QEventLoop(app)
-    asyncio.set_event_loop(loop)
-    
-    # Get screen size for fullscreen
-    screen = app.primaryScreen()
-    size = screen.size()
-    rect = screen.availableGeometry()
-    
-    app.setStyle(QStyleFactory.create('Plastique'))
-    window = MainWindow()
-    if args.fullscreen:
-        window.showFullScreen()
-    else:
-        window.show()
-    
-    window.start_app(args.dummy)
-    
-    with loop:
-        loop.run_forever()
-
-    sys.exit(app.exec_())
 
 
 
