@@ -2,13 +2,7 @@ from PySide2.QtGui import *
 from PySide2.QtCore import *
 from PySide2.QtWidgets import *
 import sys
-from enum import Enum
 
-class Direction(Enum):
-    Left = 0
-    Right = 1
-    Up = 2
-    Down = 3
 
 class Joystick(QWidget):
 

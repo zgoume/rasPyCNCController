@@ -24,13 +24,12 @@ from PySide2.QtWidgets import *
 from gcode.GrblWriterBasic import GrblWriterBasic
 from gcode.GrblWriter import GrblWriter
 from ui.widgets.LoadingWidget import LoadingWidget
+from ui.widgets.MainWidget import MainWidget
 
 import sys
 import time
 import argparse
 from utils.string_format import config_string_format
-from qasync import QEventLoop
-import asyncio
 
 
 
@@ -40,9 +39,26 @@ class AppWindow(QStackedWidget):
     def __init__(self, parent=None):
         QStackedWidget.__init__(self,parent)
         self.resize(480, 320)
-        self.setStyleSheet('background: black; QPushButton {background-color: black; color: #4af626; border:2px solid #4af626;}')
+        self.setStyleSheet('background: black;')
 
     def start_app(self, dummy = False):
-        self.loadwidget = LoadingWidget(self)
-        self.addWidget(self.loadwidget)
-        self.setCurrentWidget(self.loadwidget)
+        self.loadWidget = LoadingWidget(self)
+        self.addWidget(self.loadWidget)
+        self.setCurrentWidget(self.loadWidget)
+        QApplication.processEvents()
+
+        if dummy:
+            self.grblWriter = GrblWriterBasic()
+            time.sleep(2)
+        else:
+            self.grblWriter = GrblWriter()
+            self.grblWriter.grbl_error.connect(self.ask_perform_reset)
+
+        # here wait for GRBL and show splash screen
+        while not self.grblWriter.open():
+            QApplication.processEvents()
+
+        self.mainWidget = MainWidget(self)
+        self.addWidget(self.mainWidget)
+        self.setCurrentWidget(self.mainWidget)
+        QApplication.processEvents()
