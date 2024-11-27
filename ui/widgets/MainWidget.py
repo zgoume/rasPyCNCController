@@ -37,6 +37,12 @@ class MainWidget(QtWidgets.QWidget):
         font.setWeight(50)
         font.setBold(False)
 
+        fontBold = QtGui.QFont()
+        fontBold.setFamily("FreeSans")
+        fontBold.setPointSize(27)
+        fontBold.setWeight(50)
+        fontBold.setBold(True)
+
         layout = QtWidgets.QHBoxLayout()
         layout.setAlignment(QtCore.Qt.AlignCenter)
 
@@ -49,7 +55,7 @@ class MainWidget(QtWidgets.QWidget):
         self.zeroXBtn = QtWidgets.QPushButton(parent)
         self.zeroXBtn.setFixedSize(150, 50)
         self.zeroXBtn.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626;}')
-        self.zeroXBtn.setFont(font)
+        self.zeroXBtn.setFont(fontBold)
         self.zeroXBtn.setObjectName("zeroXBtn")
         
         self.zeroXLbl = QtWidgets.QLabel(parent)
@@ -65,7 +71,7 @@ class MainWidget(QtWidgets.QWidget):
         self.zeroYBtn = QtWidgets.QPushButton(parent)
         self.zeroYBtn.setFixedSize(150, 50)
         self.zeroYBtn.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626;}')
-        self.zeroYBtn.setFont(font)
+        self.zeroYBtn.setFont(fontBold)
         self.zeroYBtn.setObjectName("zeroYBtn")
 
         self.zeroYLbl = QtWidgets.QLabel(parent)
@@ -81,7 +87,7 @@ class MainWidget(QtWidgets.QWidget):
         self.zeroZBtn = QtWidgets.QPushButton(parent)
         self.zeroZBtn.setFixedSize(150, 50)
         self.zeroZBtn.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626;}')
-        self.zeroZBtn.setFont(font)
+        self.zeroZBtn.setFont(fontBold)
         self.zeroZBtn.setObjectName("zeroZBtn")
 
         self.zeroZLbl = QtWidgets.QLabel(parent)
@@ -94,6 +100,15 @@ class MainWidget(QtWidgets.QWidget):
         coordLayout.addWidget(self.zeroZBtn, 2, 0)
         coordLayout.addWidget(self.zeroZLbl, 2, 1)
 
+        self.zeroAllBtn = QtWidgets.QPushButton(parent)
+        self.zeroAllBtn.setFixedHeight(50)
+        self.zeroAllBtn.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626;}')
+        self.zeroAllBtn.setFont(fontBold)
+        self.zeroAllBtn.setObjectName("zeroZBtn")
+
+        coordLayout.addWidget(self.zeroAllBtn, 3, 0, 2, 0)
+
+
 
         leftLayout.addLayout(coordLayout)
         group.setLayout(leftLayout)
@@ -105,9 +120,10 @@ class MainWidget(QtWidgets.QWidget):
 
     def retranslateUi(self, parent):
         parent.setWindowTitle(QtWidgets.QApplication.translate("Main", "Form", None, -1))
-        self.zeroXLbl.setText(QtWidgets.QApplication.translate("Main", "0.0mm", None, -1))
-        self.zeroYLbl.setText(QtWidgets.QApplication.translate("Main", "0.0mm", None, -1))
-        self.zeroZLbl.setText(QtWidgets.QApplication.translate("Main", "0.0mm", None, -1))
+        self.zeroXLbl.setText(QtWidgets.QApplication.translate("Main", "0.0", None, -1))
+        self.zeroYLbl.setText(QtWidgets.QApplication.translate("Main", "0.0", None, -1))
+        self.zeroZLbl.setText(QtWidgets.QApplication.translate("Main", "0.0", None, -1))
         self.zeroXBtn.setText(QtWidgets.QApplication.translate("Main", "Zero X", None, -1))
         self.zeroYBtn.setText(QtWidgets.QApplication.translate("Main", "Zero Y", None, -1))
         self.zeroZBtn.setText(QtWidgets.QApplication.translate("Main", "Zero Z", None, -1))
+        self.zeroAllBtn.setText(QtWidgets.QApplication.translate("Main", "Zero All", None, -1))

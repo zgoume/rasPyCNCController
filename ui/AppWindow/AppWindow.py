@@ -45,7 +45,9 @@ class AppWindow(QStackedWidget):
         self.loadWidget = LoadingWidget(self)
         self.addWidget(self.loadWidget)
         self.setCurrentWidget(self.loadWidget)
-        QApplication.processEvents()
+        # QApplication.processEvents()
+
+        self.loadWidget.setStatus("Waiting for CNC...")
 
         if dummy:
             self.grblWriter = GrblWriterBasic()
@@ -57,6 +59,8 @@ class AppWindow(QStackedWidget):
         # here wait for GRBL and show splash screen
         while not self.grblWriter.open():
             QApplication.processEvents()
+
+        self.loadWidget.setStatus("Initializing...")
 
         self.mainWidget = MainWidget(self)
         self.addWidget(self.mainWidget)

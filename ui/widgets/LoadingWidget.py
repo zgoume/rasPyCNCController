@@ -31,34 +31,52 @@ class LoadingWidget(QtWidgets.QWidget):
         Splash.setObjectName("Splash")
         Splash.resize(480, 320)
 
-        layout = QtWidgets.QVBoxLayout()
-        layout.setAlignment(QtCore.Qt.AlignCenter)
-        layout.addStretch()
-
-        # Define a label for displaying GIF
-        self.label = QtWidgets.QLabel(Splash)
-        self.label.setObjectName("label")
-        self.movie = QtGui.QMovie("images/loading.gif")
-        self.label.setMovie(self.movie)
-        self.movie.start()
-
-        layout.addWidget(self.label)
-
-        self.AbortButton = QtWidgets.QPushButton(Splash)
-        self.AbortButton.resize(250, 50)
-        self.AbortButton.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626;}')
         font = QtGui.QFont()
         font.setFamily("FreeSans")
         font.setPointSize(27)
         font.setWeight(50)
         font.setBold(False)
-        self.AbortButton.setFont(font)
+
+        fontBold = QtGui.QFont()
+        fontBold.setFamily("FreeSans")
+        fontBold.setPointSize(27)
+        fontBold.setWeight(50)
+        fontBold.setBold(True)
+
+        layout = QtWidgets.QVBoxLayout()
+        layout.setAlignment(QtCore.Qt.AlignCenter)
+        # layout.addStretch()
+
+        # Define a label for displaying GIF
+        self.label = QtWidgets.QLabel(Splash)
+        self.label.setObjectName("label")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.movie = QtGui.QMovie("images/loading.gif")
+        self.label.setMovie(self.movie)
+        self.movie.start()
+
+        layout.addWidget(self.label, 0, QtCore.Qt.AlignCenter)
+
+        self.statusLbl = QtWidgets.QLabel(Splash)
+        self.statusLbl.setFixedSize(750, 100)
+        self.statusLbl.setFont(font)
+        self.statusLbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.statusLbl.setStyleSheet('background-color: black; color: #4af626; border:2px solid #4af626;')
+        self.statusLbl.setObjectName("statusLbl")
+
+        layout.addWidget(self.statusLbl, 0, QtCore.Qt.AlignCenter)
+
+        self.AbortButton = QtWidgets.QPushButton(Splash)
+        self.AbortButton.setFixedSize(250, 75)
+        # self.AbortButton.setAlignment(QtCore.Qt.AlignCenter)
+        self.AbortButton.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626; margin-top: 10px; }')
+        self.AbortButton.setFont(fontBold)
         self.AbortButton.setObjectName("AbortButton")
         self.AbortButton.clicked.connect(self.destroy)
 
-        layout.addWidget(self.AbortButton)
+        layout.addWidget(self.AbortButton, 0, QtCore.Qt.AlignCenter)
 
-        layout.addStretch()
+        # layout.addStretch()
         self.setLayout(layout)
 
         self.retranslateUi(Splash)
@@ -68,6 +86,9 @@ class LoadingWidget(QtWidgets.QWidget):
         Splash.setWindowTitle(QtWidgets.QApplication.translate("Splash", "Form", None, -1))
         #self.label.setText(QtWidgets.QApplication.translate("Splash", "Some text here", None, -1))
         self.AbortButton.setText(QtWidgets.QApplication.translate("Splash", "Abort", None, -1))
+
+    def setStatus(self, message):
+        self.statusLbl.setText(message)
 
     def destroy(self):
         sys.exit(0)
