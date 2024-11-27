@@ -62,3 +62,7 @@ class AppWindow(QStackedWidget):
         self.addWidget(self.mainWidget)
         self.setCurrentWidget(self.mainWidget)
         QApplication.processEvents()
+
+    def ask_perform_reset(self, errorLine):
+        if self.grblWriter.resetting:
+            return
