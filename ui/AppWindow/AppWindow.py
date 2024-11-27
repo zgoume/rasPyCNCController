@@ -66,3 +66,10 @@ class AppWindow(QStackedWidget):
     def ask_perform_reset(self, errorLine):
         if self.grblWriter.resetting:
             return
+        
+        if self.runWidget.running: # the run widget deals with errors on its own
+            return
+        res = QMessageBox.critical(self, "Grbl Error", "%s\nPerform reset?" % (errorLine),
+                                      QMessageBox.Yes | QMessageBox.No)
+        if res == QMessageBox.Yes:
+            self.grblWriter.reset()
