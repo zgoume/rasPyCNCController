@@ -19,6 +19,7 @@
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
 from PySide2 import QtCore, QtGui, QtWidgets
+from utils import Joystick
 
 import sys
 
@@ -47,22 +48,19 @@ class MainWidget(QtWidgets.QWidget):
         layout.setAlignment(QtCore.Qt.AlignCenter)
 
         group = QtWidgets.QGroupBox()
-        group.setStyleSheet("QGroupBox { border: 2px solid #4af626;  border-radius: 10px;} ")
-
+        
         leftLayout = QtWidgets.QVBoxLayout()
         coordLayout = QtWidgets.QGridLayout()
 
         self.zeroXBtn = QtWidgets.QPushButton(parent)
         self.zeroXBtn.setFixedSize(150, 50)
-        self.zeroXBtn.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626;}')
         self.zeroXBtn.setFont(fontBold)
         self.zeroXBtn.setObjectName("zeroXBtn")
         
         self.zeroXLbl = QtWidgets.QLabel(parent)
         self.zeroXLbl.setFont(font)
-        self.zeroXLbl.setFixedSize(250, 50)
+        self.zeroXLbl.setFixedSize(200, 50)
         self.zeroXLbl.setAlignment(QtCore.Qt.AlignLeft)
-        self.zeroXLbl.setStyleSheet('color: #4af626; border:2px solid #4af626;')
         self.zeroXLbl.setObjectName("zeroXLbl")
 
         coordLayout.addWidget(self.zeroXBtn, 0, 0)
@@ -70,15 +68,13 @@ class MainWidget(QtWidgets.QWidget):
 
         self.zeroYBtn = QtWidgets.QPushButton(parent)
         self.zeroYBtn.setFixedSize(150, 50)
-        self.zeroYBtn.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626;}')
         self.zeroYBtn.setFont(fontBold)
         self.zeroYBtn.setObjectName("zeroYBtn")
 
         self.zeroYLbl = QtWidgets.QLabel(parent)
         self.zeroYLbl.setFont(font)
-        self.zeroYLbl.setFixedSize(250, 50)
+        self.zeroYLbl.setFixedSize(200, 50)
         self.zeroYLbl.setAlignment(QtCore.Qt.AlignLeft)
-        self.zeroYLbl.setStyleSheet('color: #4af626; border:2px solid #4af626;')
         self.zeroYLbl.setObjectName("zeroYLbl")
 
         coordLayout.addWidget(self.zeroYBtn, 1, 0)
@@ -86,15 +82,13 @@ class MainWidget(QtWidgets.QWidget):
 
         self.zeroZBtn = QtWidgets.QPushButton(parent)
         self.zeroZBtn.setFixedSize(150, 50)
-        self.zeroZBtn.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626;}')
         self.zeroZBtn.setFont(fontBold)
         self.zeroZBtn.setObjectName("zeroZBtn")
 
         self.zeroZLbl = QtWidgets.QLabel(parent)
         self.zeroZLbl.setFont(font)
-        self.zeroZLbl.setFixedSize(250, 50)
+        self.zeroZLbl.setFixedSize(200, 50)
         self.zeroZLbl.setAlignment(QtCore.Qt.AlignLeft)
-        self.zeroZLbl.setStyleSheet('color: #4af626; border:2px solid #4af626;')
         self.zeroZLbl.setObjectName("zeroZLbl")
 
         coordLayout.addWidget(self.zeroZBtn, 2, 0)
@@ -102,17 +96,26 @@ class MainWidget(QtWidgets.QWidget):
 
         self.zeroAllBtn = QtWidgets.QPushButton(parent)
         self.zeroAllBtn.setFixedHeight(50)
-        self.zeroAllBtn.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626;}')
         self.zeroAllBtn.setFont(fontBold)
         self.zeroAllBtn.setObjectName("zeroZBtn")
 
         coordLayout.addWidget(self.zeroAllBtn, 3, 0, 2, 0)
 
-
-
         leftLayout.addLayout(coordLayout)
         group.setLayout(leftLayout)
         layout.addWidget(group)
+
+        group2 = QtWidgets.QGroupBox()
+        
+        rightLayout = QtWidgets.QVBoxLayout()
+
+        joy = Joystick.Joystick()
+        
+        rightLayout.addWidget(joy)
+
+        group2.setLayout(rightLayout)
+        layout.addWidget(group2)
+
         self.setLayout(layout)
 
         self.retranslateUi(parent)

@@ -19,6 +19,7 @@
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
 from PySide2.QtGui import *
+from PySide2.QtCore import *
 from PySide2.QtWidgets import *
 
 from gcode.GrblWriterBasic import GrblWriterBasic
@@ -55,12 +56,19 @@ if __name__ == "__main__":
     size = screen.size()
     rect = screen.availableGeometry()
     
-    app.setStyle(QStyleFactory.create('Breeze'))
+    qssFile = QFile("stylesheet/greenblack.qss")
+    qssFile.open(QFile.ReadOnly)
+    qssString = qssFile.readAll().data().decode()
+    print(qssString)
+    app.setStyleSheet(qssString)
+
+    # app.setStyle(QStyleFactory.create('Breeze'))
 
     if args.newgui:
         window = AppWindow()
     else:
         window = MainWindow()
+        
     if args.fullscreen:
         window.setGeometry(0, 0, rect.width(), rect.height())
         

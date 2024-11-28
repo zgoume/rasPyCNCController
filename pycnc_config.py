@@ -2,7 +2,7 @@ from PySide2.QtCore import Qt
 
 # GrblWriter
 
-SERIAL_PATTERN="/dev/ttyACM*"
+SERIAL_PATTERN="/dev/ttyUSB*"
 BAUD=115200
 SERIAL_DEBUG = False # define if serial communication should be shown
 CHECK_GCODE = True # define if every new GCode file should be run in check mode first

@@ -11,10 +11,10 @@ class Joystick(QWidget):
 
     def __init__(self, parent=None):
         super(Joystick, self).__init__(parent)
-        self.setMinimumSize(100, 100)
+        self.setFixedSize(400, 400)
         self.movingOffset = QPointF(0, 0)
         self.grabCenter = False
-        self.__maxDistance = 100
+        self.__maxDistance = 200
         self.__valueRange = 10
         self.__x = 0
         self.__y = 0
@@ -22,8 +22,8 @@ class Joystick(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self)
         bounds = QRectF(-self.__maxDistance, -self.__maxDistance, ((self.__maxDistance * 2) - 1) , ((self.__maxDistance * 2) - 1)).translated(self._center())
+        painter.setPen(Qt.green)
         painter.drawRect(bounds)
-        painter.setBrush(Qt.black)
         painter.drawEllipse(self._centerEllipse())
 
     def _centerEllipse(self):

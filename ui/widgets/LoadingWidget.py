@@ -61,7 +61,7 @@ class LoadingWidget(QtWidgets.QWidget):
         self.statusLbl.setFixedSize(750, 100)
         self.statusLbl.setFont(font)
         self.statusLbl.setAlignment(QtCore.Qt.AlignCenter)
-        self.statusLbl.setStyleSheet('background-color: black; color: #4af626; border:2px solid #4af626;')
+        # self.statusLbl.setStyleSheet('background-color: black; color: #4af626; border:2px solid #4af626;')
         self.statusLbl.setObjectName("statusLbl")
 
         layout.addWidget(self.statusLbl, 0, QtCore.Qt.AlignCenter)
@@ -69,7 +69,8 @@ class LoadingWidget(QtWidgets.QWidget):
         self.AbortButton = QtWidgets.QPushButton(Splash)
         self.AbortButton.setFixedSize(250, 75)
         # self.AbortButton.setAlignment(QtCore.Qt.AlignCenter)
-        self.AbortButton.setStyleSheet('QPushButton {background-color: black; color: #4af626; border:2px solid #4af626; margin-top: 10px; }')
+        # self.AbortButton.setStyleSheet("""QPushButton {background-color: black; color: #4af626; border:2px solid #4af626; margin-top: 10px; }
+                                            # QPushButton:pressed {background-color: #4af626; color: #000000; border:2px solid #4af626; margin-top: 10px; }""")
         self.AbortButton.setFont(fontBold)
         self.AbortButton.setObjectName("AbortButton")
         self.AbortButton.clicked.connect(self.destroy)
