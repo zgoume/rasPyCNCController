@@ -1,0 +1,19 @@
+QPushButton {
+    background-color: #000000; 
+    color: #4af626; 
+    border:2px solid #4af626;
+}
+QPushButton:pressed {
+    background-color: #4af626; 
+    color: #FFFFFF; 
+    border:2px solid #FFFFFF;
+}
+QLabel {
+    background-color: black; 
+    color: #4af626; 
+    border:2px solid #4af626;
+}
+QGroupBox { 
+    border: 2px solid #4af626;  
+    border-radius: 10px;
+}

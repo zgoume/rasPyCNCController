@@ -44,6 +44,15 @@ class MainWidget(QtWidgets.QWidget):
         fontBold.setWeight(50)
         fontBold.setBold(True)
 
+        globalLayout = QtWidgets.QVBoxLayout()
+
+        # QGroupBox en haut (100px de hauteur et toute la largeur)
+        top_group_box = QtWidgets.QGroupBox()
+        top_group_box.setFixedHeight(75)
+        top_group_layout = QtWidgets.QVBoxLayout()
+        top_group_box.setLayout(top_group_layout)
+        globalLayout.addWidget(top_group_box)
+
         layout = QtWidgets.QHBoxLayout()
         layout.setAlignment(QtCore.Qt.AlignCenter)
 
@@ -52,60 +61,149 @@ class MainWidget(QtWidgets.QWidget):
         leftLayout = QtWidgets.QVBoxLayout()
         coordLayout = QtWidgets.QGridLayout()
 
+        self.XLbl = QtWidgets.QLabel(parent)
+        self.XLbl.setFont(font)
+        self.XLbl.setFixedSize(100, 50)
+        self.XLbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.XLbl.setObjectName("XLbl")
+
         self.zeroXBtn = QtWidgets.QPushButton(parent)
-        self.zeroXBtn.setFixedSize(150, 50)
+        self.zeroXBtn.setFixedSize(100, 50)
         self.zeroXBtn.setFont(fontBold)
         self.zeroXBtn.setObjectName("zeroXBtn")
         
         self.zeroXLbl = QtWidgets.QLabel(parent)
         self.zeroXLbl.setFont(font)
-        self.zeroXLbl.setFixedSize(200, 50)
+        self.zeroXLbl.setFixedHeight(50)
+        self.zeroXLbl.setMinimumWidth(200)
         self.zeroXLbl.setAlignment(QtCore.Qt.AlignLeft)
         self.zeroXLbl.setObjectName("zeroXLbl")
 
-        coordLayout.addWidget(self.zeroXBtn, 0, 0)
+        coordLayout.addWidget(self.XLbl, 0, 0)
         coordLayout.addWidget(self.zeroXLbl, 0, 1)
+        coordLayout.addWidget(self.zeroXBtn, 0, 2)
+
+        self.YLbl = QtWidgets.QLabel(parent)
+        self.YLbl.setFont(font)
+        self.YLbl.setFixedSize(100, 50)
+        self.YLbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.YLbl.setObjectName("YLbl")
 
         self.zeroYBtn = QtWidgets.QPushButton(parent)
-        self.zeroYBtn.setFixedSize(150, 50)
+        self.zeroYBtn.setFixedSize(100, 50)
         self.zeroYBtn.setFont(fontBold)
         self.zeroYBtn.setObjectName("zeroYBtn")
 
         self.zeroYLbl = QtWidgets.QLabel(parent)
         self.zeroYLbl.setFont(font)
-        self.zeroYLbl.setFixedSize(200, 50)
+        self.zeroYLbl.setFixedHeight(50)
+        self.zeroYLbl.setMinimumWidth(200)
         self.zeroYLbl.setAlignment(QtCore.Qt.AlignLeft)
         self.zeroYLbl.setObjectName("zeroYLbl")
 
-        coordLayout.addWidget(self.zeroYBtn, 1, 0)
+        coordLayout.addWidget(self.YLbl, 1, 0)
         coordLayout.addWidget(self.zeroYLbl, 1, 1)
+        coordLayout.addWidget(self.zeroYBtn, 1, 2)
+
+        self.ZLbl = QtWidgets.QLabel(parent)
+        self.ZLbl.setFont(font)
+        self.ZLbl.setFixedSize(100, 50)
+        self.ZLbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.ZLbl.setObjectName("ZLbl")
 
         self.zeroZBtn = QtWidgets.QPushButton(parent)
-        self.zeroZBtn.setFixedSize(150, 50)
+        self.zeroZBtn.setFixedSize(100, 50)
         self.zeroZBtn.setFont(fontBold)
         self.zeroZBtn.setObjectName("zeroZBtn")
 
         self.zeroZLbl = QtWidgets.QLabel(parent)
         self.zeroZLbl.setFont(font)
-        self.zeroZLbl.setFixedSize(200, 50)
+        self.zeroZLbl.setFixedHeight(50)
+        self.zeroZLbl.setMinimumWidth(200)
         self.zeroZLbl.setAlignment(QtCore.Qt.AlignLeft)
         self.zeroZLbl.setObjectName("zeroZLbl")
 
-        coordLayout.addWidget(self.zeroZBtn, 2, 0)
+        coordLayout.addWidget(self.ZLbl, 2, 0)
         coordLayout.addWidget(self.zeroZLbl, 2, 1)
+        coordLayout.addWidget(self.zeroZBtn, 2, 2)
 
         self.zeroAllBtn = QtWidgets.QPushButton(parent)
         self.zeroAllBtn.setFixedHeight(50)
         self.zeroAllBtn.setFont(fontBold)
         self.zeroAllBtn.setObjectName("zeroZBtn")
 
-        coordLayout.addWidget(self.zeroAllBtn, 3, 0, 2, 0)
+        coordLayout.addWidget(self.zeroAllBtn, 3, 0, 3, 0)
+
+        # Layout principal
+        main_layout = QtWidgets.QVBoxLayout()
+
+        # Ligne 2 : Home all (largeur complète)
+        btn_home_all = QtWidgets.QPushButton("Home All")
+        btn_home_all.setStyleSheet("min-width: 200px;")  # Optionnel pour large bouton
+        btn_home_all.setFont(fontBold)
+        btn_home_all.setMinimumHeight(50)
+        size_policy = btn_home_all.sizePolicy()
+        size_policy.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)  # Permet de s'étendre verticalement
+        btn_home_all.setSizePolicy(size_policy)
+        main_layout.addWidget(btn_home_all)
+
+        # Ligne 1 : Home X, Home Y, Home Z
+        line1_layout = QtWidgets.QHBoxLayout()
+        btn_home_x = QtWidgets.QPushButton("Ω X")
+        btn_home_x.setFont(fontBold)
+        btn_home_x.setMinimumHeight(50)
+        size_policy = btn_home_x.sizePolicy()
+        size_policy.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)  # Permet de s'étendre verticalement
+        btn_home_x.setSizePolicy(size_policy)
+
+        btn_home_y = QtWidgets.QPushButton("Ω Y")
+        btn_home_y.setFont(fontBold)
+        btn_home_y.setMinimumHeight(50)
+        size_policy = btn_home_y.sizePolicy()
+        size_policy.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)  # Permet de s'étendre verticalement
+        btn_home_y.setSizePolicy(size_policy)
+
+        btn_home_z = QtWidgets.QPushButton("Ω Z")
+        btn_home_z.setFont(fontBold)
+        btn_home_z.setMinimumHeight(50)
+        size_policy = btn_home_z.sizePolicy()
+        size_policy.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)  # Permet de s'étendre verticalement
+        btn_home_z.setSizePolicy(size_policy)
+
+        line1_layout.addWidget(btn_home_x)
+        line1_layout.addWidget(btn_home_y)
+        line1_layout.addWidget(btn_home_z)
+        main_layout.addLayout(line1_layout)
+
+        # Ligne 3 : Load File, Run
+        line3_layout = QtWidgets.QHBoxLayout()
+
+        btn_load_file = QtWidgets.QPushButton("Load")
+        btn_load_file.setFont(fontBold)
+        btn_load_file.setMinimumHeight(50)
+        size_policy = btn_load_file.sizePolicy()
+        size_policy.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)  # Permet de s'étendre verticalement
+        btn_load_file.setSizePolicy(size_policy)
+
+        btn_run = QtWidgets.QPushButton("Run")
+        btn_run.setFont(fontBold)
+        btn_run.setMinimumHeight(50)
+        size_policy = btn_run.sizePolicy()
+        size_policy.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)  # Permet de s'étendre verticalement
+        btn_run.setSizePolicy(size_policy)
+
+        line3_layout.addWidget(btn_load_file)
+        line3_layout.addWidget(btn_run)
+
+        main_layout.addLayout(line3_layout)
 
         leftLayout.addLayout(coordLayout)
+        leftLayout.addLayout(main_layout)
         group.setLayout(leftLayout)
-        layout.addWidget(group)
+        layout.addWidget(group, stretch=1)
 
         group2 = QtWidgets.QGroupBox()
+        group2.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         
         rightLayout = QtWidgets.QVBoxLayout()
 
@@ -114,9 +212,11 @@ class MainWidget(QtWidgets.QWidget):
         rightLayout.addWidget(joy)
 
         group2.setLayout(rightLayout)
-        layout.addWidget(group2)
+        layout.addWidget(group2, stretch=2)
 
-        self.setLayout(layout)
+        globalLayout.addLayout(layout)
+
+        self.setLayout(globalLayout)
 
         self.retranslateUi(parent)
         # QtCore.QMetaObject.connectSlotsByName(parent)
@@ -126,7 +226,10 @@ class MainWidget(QtWidgets.QWidget):
         self.zeroXLbl.setText(QtWidgets.QApplication.translate("Main", "0.0", None, -1))
         self.zeroYLbl.setText(QtWidgets.QApplication.translate("Main", "0.0", None, -1))
         self.zeroZLbl.setText(QtWidgets.QApplication.translate("Main", "0.0", None, -1))
-        self.zeroXBtn.setText(QtWidgets.QApplication.translate("Main", "Zero X", None, -1))
-        self.zeroYBtn.setText(QtWidgets.QApplication.translate("Main", "Zero Y", None, -1))
-        self.zeroZBtn.setText(QtWidgets.QApplication.translate("Main", "Zero Z", None, -1))
+        self.XLbl.setText(QtWidgets.QApplication.translate("Main", "X", None, -1))
+        self.YLbl.setText(QtWidgets.QApplication.translate("Main", "Y", None, -1))
+        self.ZLbl.setText(QtWidgets.QApplication.translate("Main", "Z", None, -1))
+        self.zeroXBtn.setText(QtWidgets.QApplication.translate("Main", "0", None, -1))
+        self.zeroYBtn.setText(QtWidgets.QApplication.translate("Main", "0", None, -1))
+        self.zeroZBtn.setText(QtWidgets.QApplication.translate("Main", "0", None, -1))
         self.zeroAllBtn.setText(QtWidgets.QApplication.translate("Main", "Zero All", None, -1))
