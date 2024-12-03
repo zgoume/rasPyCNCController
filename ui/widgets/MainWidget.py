@@ -19,7 +19,7 @@
 # along with rasPyCNCController.  If not, see <http://www.gnu.org/licenses/>.
 
 from PySide2 import QtCore, QtGui, QtWidgets
-from utils import Joystick
+from utils import Joystick, ZSlider
 
 import sys
 
@@ -217,11 +217,59 @@ class MainWidget(QtWidgets.QWidget):
         group2 = QtWidgets.QGroupBox()
         group2.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         
-        rightLayout = QtWidgets.QVBoxLayout()
+        # Créer un QTabBar
+        self.tab_bar = QtWidgets.QTabBar()
+        self.tab_bar.setShape(QtWidgets.QTabBar.RoundedWest)  # Orientation verticale
+        size_policy = self.tab_bar.sizePolicy()
+        size_policy.setVerticalPolicy(QtWidgets.QSizePolicy.Expanding)  # Permet de s'étendre verticalement
+        self.tab_bar.setSizePolicy(size_policy)
+
+        # Ajouter des onglets
+        self.tab_bar.addTab("Jog")
+        self.tab_bar.addTab("Settings")
+
+        # Connecter le signal de changement d'onglet
+        self.tab_bar.currentChanged.connect(self.switch_tab)
+
+        # Créer un QStackedWidget pour afficher différents widgets
+        self.stacked_widget = QtWidgets.QStackedWidget()
+
+        # Ajouter des widgets au QStackedWidget
+        jogWidget = QtWidgets.QWidget()
+        jogLayout = QtWidgets.QGridLayout()
+
+        zSlide = ZSlider.ZSlider()
+        zSlide.setFixedWidth(100)
 
         joy = Joystick.Joystick()
+        width = joy.width()
+        joy.setFixedHeight(width)
+
+        XYLbl = QtWidgets.QLabel("X / Y")
+        XYLbl.setFont(font)
+        XYLbl.setFixedHeight(50)
+        XYLbl.setAlignment(QtCore.Qt.AlignCenter)
+
+        ZLbl = QtWidgets.QLabel("Z")
+        ZLbl.setFont(font)
+        ZLbl.setFixedHeight(50)
+        ZLbl.setAlignment(QtCore.Qt.AlignCenter)
+
+        jogLayout.addWidget(XYLbl, 0, 0)
+        jogLayout.addWidget(ZLbl, 0, 1)
+        jogLayout.addWidget(joy, 1, 0)
+        jogLayout.addWidget(zSlide, 1, 1)
+        # jogLayout.addWidget(joy, 0, 0)
+        # jogLayout.addWidget(joy, 0, 1)
+        jogWidget.setLayout(jogLayout)
         
-        rightLayout.addWidget(joy)
+        self.stacked_widget.addWidget(jogWidget)
+        self.stacked_widget.addWidget(self.create_tab_content("Content for Tab 2"))
+
+        # Layout principal
+        rightLayout = QtWidgets.QHBoxLayout()
+        rightLayout.addWidget(self.stacked_widget)
+        rightLayout.addWidget(self.tab_bar)
 
         group2.setLayout(rightLayout)
         layout.addWidget(group2, stretch=2)
@@ -232,6 +280,20 @@ class MainWidget(QtWidgets.QWidget):
 
         self.retranslateUi(parent)
         # QtCore.QMetaObject.connectSlotsByName(parent)
+
+    def create_tab_content(self, text):
+        """Créer un widget pour le contenu de chaque onglet."""
+        widget = QtWidgets.QWidget()
+        layout = QtWidgets.QVBoxLayout()
+        label = QtWidgets.QLabel(text)
+        label.setAlignment(QtCore.Qt.AlignCenter)
+        layout.addWidget(label)
+        widget.setLayout(layout)
+        return widget
+
+    def switch_tab(self, index):
+        """Changer de widget affiché dans le QStackedWidget."""
+        self.stacked_widget.setCurrentIndex(index)
 
     def retranslateUi(self, parent):
         parent.setWindowTitle(QtWidgets.QApplication.translate("Main", "Form", None, -1))

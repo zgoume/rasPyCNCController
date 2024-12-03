@@ -4,43 +4,21 @@ from PySide2.QtWidgets import *
 import sys
 
 
-class Joystick(QWidget):
+class ZSlider(QWidget):
 
     joyChanged = Signal()
     joyReleased = Signal()
 
     def __init__(self, parent=None):
-        super(Joystick, self).__init__(parent)
+        super(ZSlider, self).__init__(parent)
         # self.setFixedSize(400, 400)
         self.movingOffset = QPointF(0, 0)
         self.grabCenter = False
-        self.__maxDistanceX = 200
         self.__maxDistanceY = 200
         self.__valueRange = 10
-        self.__x = 0
         self.__y = 0
-        sizePolicy = QSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        sizePolicy.setHeightForWidth(True)
-        self.setSizePolicy(sizePolicy)
-
-    def heightForWidth(self, width):
-        return self.width()
     
     def resizeEvent(self, event):
-
-        print("DEBUG Before %d / %d" % (self.width(), self.height()))
-        # Récupérer la largeur et la hauteur disponibles
-        new_size = min(self.width(), self.height())
-
-        # Appliquer une taille carrée
-        self.resize(new_size, new_size)
-
-        # Appeler l'événement parent pour gérer le comportement standard
-        super().resizeEvent(event)
-        
-        print("DEBUG After %d / %d" % (self.width(), self.height()))
-        
-        self.__maxDistanceX = int(self.width() / 2)
         self.__maxDistanceY = int(self.height() / 2)
 
     def paintEvent(self, event):
@@ -50,7 +28,7 @@ class Joystick(QWidget):
         bounds = QRectF(0, 0, (width - 1), (height - 1))
         painter.setPen(Qt.green)
         painter.drawRect(bounds)
-        painter.drawEllipse(self._centerEllipse())
+        painter.drawRect(self._centerEllipse())
 
     def _centerEllipse(self):
         if self.grabCenter:
@@ -64,22 +42,17 @@ class Joystick(QWidget):
     def _boundJoystick(self, point):
         limitLine = QLineF(self._center(), point)
         
-        relX = (limitLine.x2() - limitLine.x1())
         relY = (limitLine.y2() - limitLine.y1())
-
-        # print("DEBUG x = %f / y = %f" % (relX, relY))
-
-        if (relX > self.__maxDistanceX):
-            limitLine.setP2(QPointF(limitLine.x1() + self.__maxDistanceX, limitLine.y2()))
-        elif (relX < -self.__maxDistanceX):
-            limitLine.setP2(QPointF(limitLine.x1() - self.__maxDistanceX, limitLine.y2()))
-
-
+        limitY = limitLine.y2()
+        
         if (relY > self.__maxDistanceY):
-            limitLine.setP2(QPointF(limitLine.x2(), limitLine.y1() + self.__maxDistanceY))
+            limitY = limitLine.y1() + self.__maxDistanceY
+            
         elif (relY < -self.__maxDistanceY):
-            limitLine.setP2(QPointF(limitLine.x2(), limitLine.y1() - self.__maxDistanceY))
+            limitY = limitLine.y1() - self.__maxDistanceY
 
+        limitLine.setP2(QPointF(limitLine.x1(), limitY))
+        
         # if (limitLine.length() > self.__maxDistance):
         #      limitLine.setLength(self.__maxDistance)
 
@@ -90,16 +63,15 @@ class Joystick(QWidget):
             return 0
         normVector = QLineF(self._center(), self.movingOffset)
         
-        valX = int(((normVector.x2() - normVector.x1()) * self.__valueRange) / self.__maxDistanceX)
         valY = int(((normVector.y2() - normVector.y1()) * self.__valueRange) / self.__maxDistanceY)
 
-        return (valX, valY)
+        return (valY)
 
     def setRangeValue(self, value):
         self.__valueRange = value
 
     def value(self):
-        return (self.__x, self.__y)
+        return (self.__y)
 
     def mousePressEvent(self, ev):
         self.grabCenter = self._centerEllipse().contains(ev.pos())
@@ -115,15 +87,14 @@ class Joystick(QWidget):
         if self.grabCenter:
             # print("Moving")
 
-            tempX = self.__x
             tempY = self.__y
 
             self.movingOffset = self._boundJoystick(event.pos())
-            self.__x, self.__y = self.joystickDirection()
+            self.__y = self.joystickDirection()
             
             self.update()
 
-            if (self.__x != tempX or self.__y != tempY):
+            if (self.__y != tempY):
                 # print("emit")
                 self.joyChanged.emit()
         # print(self.joystickDirection())

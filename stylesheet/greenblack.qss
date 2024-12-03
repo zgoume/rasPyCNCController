@@ -17,3 +17,21 @@ QGroupBox {
     border: 2px solid #4af626;  
     border-radius: 10px;
 }
+
+QTabBar::tab {
+    width: 50px;
+}
+
+QTabBar::tab {
+    background-color: #000000; 
+    color: #4af626; 
+    border:2px solid #4af626;
+    font-size: 27pt;
+}
+
+QTabBar::tab:selected {
+    background-color: #4af626; 
+    color: #000000; 
+    border:2px solid #4af626;
+    font-size: 27pt;
+}
