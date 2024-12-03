@@ -28,7 +28,6 @@ class Joystick(QWidget):
     
     def resizeEvent(self, event):
 
-        print("DEBUG Before %d / %d" % (self.width(), self.height()))
         # Récupérer la largeur et la hauteur disponibles
         new_size = min(self.width(), self.height())
 
@@ -37,8 +36,6 @@ class Joystick(QWidget):
 
         # Appeler l'événement parent pour gérer le comportement standard
         super().resizeEvent(event)
-        
-        print("DEBUG After %d / %d" % (self.width(), self.height()))
         
         self.__maxDistanceX = int(self.width() / 2)
         self.__maxDistanceY = int(self.height() / 2)

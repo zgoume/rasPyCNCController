@@ -242,8 +242,6 @@ class MainWidget(QtWidgets.QWidget):
         zSlide.setFixedWidth(100)
 
         joy = Joystick.Joystick()
-        width = joy.width()
-        joy.setFixedHeight(width)
 
         XYLbl = QtWidgets.QLabel("X / Y")
         XYLbl.setFont(font)
