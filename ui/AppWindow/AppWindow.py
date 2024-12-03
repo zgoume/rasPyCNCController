@@ -45,7 +45,7 @@ class AppWindow(QStackedWidget):
         self.loadWidget = LoadingWidget(self)
         self.addWidget(self.loadWidget)
         self.setCurrentWidget(self.loadWidget)
-        # QApplication.processEvents()
+        QApplication.processEvents()
 
         self.loadWidget.setStatus("Waiting for CNC...")
 

@@ -28,6 +28,7 @@ class ZSlider(QWidget):
         bounds = QRectF(0, 0, (width - 1), (height - 1))
         painter.setPen(Qt.green)
         painter.drawRect(bounds)
+        painter.setBrush(Qt.green)
         painter.drawRect(self._centerEllipse())
 
     def _centerEllipse(self):

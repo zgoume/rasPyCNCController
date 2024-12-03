@@ -239,7 +239,7 @@ class MainWidget(QtWidgets.QWidget):
         jogLayout = QtWidgets.QGridLayout()
 
         zSlide = ZSlider.ZSlider()
-        zSlide.setFixedWidth(100)
+        zSlide.setMaximumWidth(100)
 
         joy = Joystick.Joystick()
 
